@@ -30,3 +30,20 @@ author = 39953335
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "flask run"
+
+[[workflows.workflow]]
+name = "git puch"
+mode = "sequential"
+author = 39953335
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "git add ."
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "git branch -M main"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "git push -u origin main"
