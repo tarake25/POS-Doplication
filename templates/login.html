@@ -1,0 +1,75 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <title>Login</title>
+        <style>
+
+            body {
+                font-family: Arial, sans-serif;
+                background: linear-gradient(135deg, #4e54c8, #8f94fb);
+                color: #fff;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+            }
+            .container {
+                text-align: center;
+                background: rgba(0, 0, 0, 0.3);
+                padding: 40px;
+                border-radius: 16px;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            }
+            h1 {
+                margin-bottom: 20px;
+                font-size: 2rem;
+            }
+            .file-input {
+                margin: 20px 0;
+            }
+            .file-label {
+                display: block;
+                margin-bottom: 10px;
+                font-size: 1.2rem;
+            }
+            .file-box {
+                display: inline-block;
+                padding: 10px;
+                border: 2px dashed #fff;
+                border-radius: 12px;
+                transition: background 0.3s;
+                cursor: pointer;
+            }
+            .file-box:hover {
+                background: rgba(255, 255, 255, 0.2);
+            }
+            input[type="file"] {
+                display: none;
+            }
+            button {
+                background-color: #4CAF50;
+                color: white;
+                padding: 10px 20px;
+                font-size: 1rem;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: background 0.3s;
+            }
+            button:hover {
+                background-color: #45a049;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Login</h1>
+            <form method="post">
+                <label>Username: <input type="text" name="username"></label><br><br>
+                <label>Password: <input type="password" name="password"></label><br><br>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </body>
+    </html>

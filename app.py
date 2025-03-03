@@ -1,12 +1,17 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, redirect, url_for, session
 import pandas as pd
 import os
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
+app.secret_key = 'your_secret_key_here'
+
 UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+# Dummy credentials
+VALID_USERNAME = 'aymen'
+VALID_PASSWORD = '010203'
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -36,11 +41,12 @@ def index():
 
             #SEARCH THE DATA BASE FOR OUR POS
             df_fin = pd.DataFrame({})
-            for i in range(len(df1)) :
-              for j in range(len(df)) :
-                if df1.iat[i,0] == df.iat[j,1] :
+            for i in range(len(df1)):
+                for j in range(len(df)):
+                    if df1.iat[i, 0] == df.iat[j, 1]:
 
-                  df_fin = pd.concat([df_fin, df.iloc[[j]]], ignore_index=True)
+                        df_fin = pd.concat([df_fin, df.iloc[[j]]],
+                                           ignore_index=True)
 
             df_fin = df_fin.sort_values(by='Code POS')
             output_path = os.path.join(UPLOAD_FOLDER, 'processed.xlsx')
@@ -55,11 +61,32 @@ def index():
 
             return response
 
-
         except Exception as e:
             return f"Error processing files: {e}"
 
-    return render_template('index.html')
+    if 'user' in session:
+        return render_template('index.html')
+    return redirect(url_for('login'))
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        if username == VALID_USERNAME and password == VALID_PASSWORD:
+            session['user'] = username
+            return redirect(url_for('index'))
+
+        return "Invalid credentials, try again."
+    return render_template('login.html')
+
+
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    return redirect(url_for('login'))
 
 
 if __name__ == '__main__':
