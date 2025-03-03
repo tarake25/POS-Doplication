@@ -49,8 +49,24 @@ def index():
                                            ignore_index=True)
 
             df_fin = df_fin.sort_values(by='Code POS')
+
+            df_db = pd.DataFrame({})
+            j = 0
+            for i in range(len(df_fin) - 1):
+                if df_fin.iat[i, 1] != df_fin.iat[i + 1, 1]:
+                    df_db = pd.concat([df_db, df_fin.iloc[[i]]],
+                                      ignore_index=True)
+                    df_db.iat[j, 2] = df_fin.iat[
+                        i, 1] + f"-{int(df_fin.iat[i,2][-1])+1}"
+                    j = j + 1
+            if df_fin.iat[i, 1] != df_fin.iat[i + 1, 1]:
+                df_db = pd.concat([df_db, df_fin.iloc[[i]]], ignore_index=True)
+                df_db.iat[j,
+                          2] = df_fin.iat[i + 1,
+                                          1] + f"-{int(df_fin.iat[i,2][-1])+1}"
+
             output_path = os.path.join(UPLOAD_FOLDER, 'processed.xlsx')
-            df_fin.to_excel(output_path, index=False)
+            df_db.to_excel(output_path, index=False)
 
             # Clean up: Delete uploaded and processed files after sending
             response = send_file(output_path, as_attachment=True)
